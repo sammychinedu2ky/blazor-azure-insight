@@ -75,7 +75,7 @@ resource appInsightAlert 'Microsoft.Insights/scheduledQueryRules@2022-08-01-prev
 
 resource actionGroup 'Microsoft.Insights/actionGroups@2023-01-01' = {
   name: '${appName}-insight-action-group'
-  location: location
+  location: 'eastus2'
   properties: {
     groupShortName: 'action-group'
     enabled: true
