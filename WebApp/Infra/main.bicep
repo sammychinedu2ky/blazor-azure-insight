@@ -17,10 +17,11 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
 }
 
 resource cosmosDbConnectionString 'Microsoft.Web/sites/config@2021-02-01' = {
-  name: '/connectionstrings'
+  name: 'connectionstrings'
   properties: {
     value: cosmosDbAccount.listKeys()
-  }  
+  }
+  parent: webApp  
 }
 
 resource webApp 'Microsoft.Web/sites@2021-02-01' = {
@@ -28,14 +29,6 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
   location: location
   properties: {
     serverFarmId: appServicePlan.id
-    siteConfig: {
-      appSettings: [
-        {
-          name: 'COSMOSDB_CONNECTION_STRING'
-          value: cosmosDbConnectionString.properties.value.primaryMasterKey
-        }
-      ]
-    }
   }
 }
 
