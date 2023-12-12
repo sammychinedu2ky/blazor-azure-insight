@@ -16,33 +16,30 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   }
 }
 
-resource cosmosDbConnectionString 'Microsoft.Web/sites/config@2021-02-01' = {
-  name: 'connectionstrings'
-  properties: {
-    value:{
-      type: 'Custom'
-      value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
-    }
-  }
-  parent: webApp  
-}
-resource SwackyString 'Microsoft.Web/sites/config@2021-02-01' = {
-  name: 'connectionstring'
-  properties: {
-    value:{
-      type: 'Custom'
-      value: 'hi'
-    }
-  }
-  parent: webApp  
-}
+
+
 resource webApp 'Microsoft.Web/sites@2021-02-01' = {
   name: appName
   location: location
   properties: {
     serverFarmId: appServicePlan.id
+    siteConfig:{
+      connectionStrings: [
+          {
+            name: 'COSMOSDB'
+            connectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+            type: 'Custom'
+          }
+          {
+            name: 'SWACKY'
+            connectionString: 'HELLO MY BRO'
+            type: 'Custom'
+          }         
+        ]
+      }
+    }
   }
-}
+
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: '${appName}-plan'
