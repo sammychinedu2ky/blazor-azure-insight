@@ -30,3 +30,9 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'myblazorartifact'
     publishLocation: 'Container'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory/Infra)'
+    ArtifactName: 'Infra'
+    publishLocation: 'Container'
