@@ -5,20 +5,20 @@
 
 <h1>Raffle</h1>
 
-<p role="status">Random Number: @LuckyNumber</p>
+<p role="status">Random Number: @_luckyNumber</p>
 
 <button class="btn btn-primary" @onclick="DrawRaffle">Draw Raffle</button>
 
-@if(LuckyNumber % 2 == 0)
+@if(_luckyNumber % 2 == 0)
 {
     <h2>Congratulations! You win!</h2>
 }
 
 @code {
-    private int LuckyNumber = 0;
+    private int _luckyNumber = 0;
 
     private void DrawRaffle()
     {
-        LuckyNumber = Random.Shared.Next(0,11);
+        _luckyNumber = Random.Shared.Next(0,11);
     }
 }
