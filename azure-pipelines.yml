@@ -22,7 +22,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '--configuration Release --output webapp'
+    arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/webapp'
     modifyOutputPath: false
 
 - task: PublishBuildArtifacts@1
