@@ -28,15 +28,18 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
           type: 'Custom'
         }
       ]
-      appSettings:[
+      appSettings: [
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: appInsights.properties.InstrumentationKey
+        }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: appInsights.properties.ConnectionString
         }
       ]
     }
-    
-  
+
   }
 }
 
@@ -67,7 +70,7 @@ resource appInsightAlert 'Microsoft.Insights/scheduledQueryRules@2022-08-01-prev
     enabled: true
     windowSize: 'PT1M'
     severity: 2
-    scopes: [appInsights.id]
+    scopes: [ appInsights.id ]
     evaluationFrequency: 'PT1M'
     criteria: {
       allOf: [
