@@ -28,7 +28,15 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
           type: 'Custom'
         }
       ]
+      appSettings:[
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: appInsights.name
+        }
+      ]
     }
+    
+  
   }
 }
 
