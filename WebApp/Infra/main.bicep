@@ -1,6 +1,5 @@
-param appName string 
+param appName string
 param location string
-
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   name: '${appName}-cosmosdb'
@@ -16,30 +15,22 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   }
 }
 
-
-
 resource webApp 'Microsoft.Web/sites@2021-02-01' = {
   name: appName
   location: location
   properties: {
     serverFarmId: appServicePlan.id
-    siteConfig:{
+    siteConfig: {
       connectionStrings: [
-          {
-            name: 'COSMOSDB'
-            connectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
-            type: 'Custom'
-          }
-          {
-            name: 'SWACKY'
-            connectionString: 'HELLO MY BRO'
-            type: 'Custom'
-          }         
-        ]
-      }
+        {
+          name: 'COSMOSDB'
+          connectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+          type: 'Custom'
+        }
+      ]
     }
   }
-
+}
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: '${appName}-plan'
@@ -51,3 +42,48 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   kind: 'linux'
 }
 
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: '${appName}-insights'
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+  }
+}
+
+resource appInsightAlert 'Microsoft.Insights/scheduledQueryRules@2022-08-01-preview' = {
+  name: '${appName}-insights-alert'
+  location: location
+  properties: {
+    description: 'Alert for ${appName}'
+    enabled: true
+    windowSize: 'PT1M'
+    criteria: {
+      allOf: [
+        {
+          query: 'traces\r\n| extend customCount = toint(customDimensions["Count"])\r\n| where customCount > 70\r\n| project customCount, message\r\n\r\n'
+          timeAggregation: 'Count'
+          threshold: 1
+        }
+      ]
+    }
+    actions: {
+      actionGroups: [ actionGroup.id ]
+    }
+  }
+}
+
+resource actionGroup 'Microsoft.Insights/actionGroups@2023-01-01' = {
+  name: '${appName}-insight-action-group'
+  location: location
+  properties: {
+    groupShortName: 'action-group'
+    enabled: true
+    emailReceivers: [
+      {
+        name: 'email'
+        emailAddress: 'sammychinedu2ky@gmail.com'
+      }
+    ]
+  }
+}

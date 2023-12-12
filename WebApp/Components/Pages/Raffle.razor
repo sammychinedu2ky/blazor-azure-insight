@@ -1,6 +1,6 @@
 ﻿@page "/Raffle"
 @rendermode InteractiveServer
-
+@inject IConfiguration Configuration
 <PageTitle>Raffle</PageTitle>
 
 <h1>Raffle</h1>
@@ -11,9 +11,9 @@
 
 @if(_luckyNumber % 2 == 0)
 {
-    <h2>Congratulations! You win!</h2>
+    <h2>Congratulations! You won 🚀🥇</h2>
 }
-
+<p>@Configuration["CUSTOMCONNSTR:COSMOSDB"]</p>
 @code {
     private int _luckyNumber = 0;
 
