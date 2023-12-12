@@ -1,5 +1,5 @@
-param appName string
-param location string = 'westus'
+param appName string 
+param location string
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: '${appName}-plan'
