@@ -58,12 +58,16 @@ resource appInsightAlert 'Microsoft.Insights/scheduledQueryRules@2022-08-01-prev
     description: 'Alert for ${appName}'
     enabled: true
     windowSize: 'PT1M'
+    severity: 2
+    scopes: [appInsights.id]
+    evaluationFrequency: 'PT1M'
     criteria: {
       allOf: [
         {
           query: 'traces\r\n| extend customCount = toint(customDimensions["Count"])\r\n| where customCount > 70\r\n| project customCount, message\r\n\r\n'
           timeAggregation: 'Count'
           threshold: 1
+          
         }
       ]
     }
