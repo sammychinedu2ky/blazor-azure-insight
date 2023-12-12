@@ -26,7 +26,6 @@ resource cosmosDbConnectionString 'Microsoft.Web/sites/config@2021-02-01' = {
   }
   parent: webApp  
 }
-
 resource webApp 'Microsoft.Web/sites@2021-02-01' = {
   name: appName
   location: location
