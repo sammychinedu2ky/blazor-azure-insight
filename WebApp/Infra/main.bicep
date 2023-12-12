@@ -19,7 +19,10 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
 resource cosmosDbConnectionString 'Microsoft.Web/sites/config@2021-02-01' = {
   name: 'connectionstrings'
   properties: {
-    value: cosmosDbAccount.listKeys()
+    value:{
+      type: 'Custom'
+      value: listKeys(cosmosDbAccount.name, cosmosDbAccount.apiVersion).primaryMasterKey
+    }
   }
   parent: webApp  
 }
