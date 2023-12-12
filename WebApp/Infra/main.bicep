@@ -34,10 +34,14 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: appInsights.properties.ConnectionString
         }
+        {
+          name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
+          value: '~2'
+        }
     
       ]
     }
-
+    
   }
 }
 
