@@ -21,7 +21,7 @@ resource cosmosDbConnectionString 'Microsoft.Web/sites/config@2021-02-01' = {
   properties: {
     value:{
       type: 'Custom'
-      value: listKeys(cosmosDbAccount.name, cosmosDbAccount.apiVersion).primaryMasterKey
+      value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
     }
   }
   parent: webApp  
