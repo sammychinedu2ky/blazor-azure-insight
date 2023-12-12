@@ -67,7 +67,7 @@ resource appInsightAlert 'Microsoft.Insights/scheduledQueryRules@2022-08-01-prev
           query: 'traces\r\n| extend customCount = toint(customDimensions["Count"])\r\n| where customCount > 70\r\n| project customCount, message\r\n\r\n'
           timeAggregation: 'Count'
           threshold: 1
-          
+          operator: 'GreaterThan'
         }
       ]
     }
