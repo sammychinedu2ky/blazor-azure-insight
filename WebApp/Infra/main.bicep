@@ -55,12 +55,19 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   kind: 'linux'
 }
 
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01'={
+  location: location
+  name: '${appName}-loganalytics'
+
+}
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: '${appName}-insights'
   location: location
+
   kind: 'web'
   properties: {
     Application_Type: 'web'
+    WorkspaceResourceId: logAnalyticsWorkspace.id
   }
 }
 
