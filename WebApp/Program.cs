@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(ConnectionStrings.ConnectionString));
+builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(ConnectionStrings.key));
 builder.Services.AddApplicationInsightsTelemetry(option=>{
-    var connectionString= builder.Configuration.GetSection(ConnectionStrings.ConnectionString)["APPLICATION_INSIGHTS"];
+    var connectionString= builder.Configuration.GetSection(ConnectionStrings.key)["APPLICATION_INSIGHTS"];
     option.ConnectionString = connectionString;
 });
 builder.Services.AddSingleton<TableClient>(sp =>
@@ -44,7 +44,7 @@ app.Run();
 
 public class ConnectionStrings
 {
-    public const string ConnectionString = "ConnectionStrings";
+    public const string key = "ConnectionStrings";
     public string COSMOSDB { get; set; } = String.Empty;
     public string APPLICATION_INSIGHTS { get; set; } = String.Empty;
 }
