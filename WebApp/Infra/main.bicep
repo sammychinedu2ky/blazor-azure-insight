@@ -2,7 +2,7 @@ param appName string
 param location string
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
-  name: 'blazor-cosmosdb'
+  name: '${appName}-cosmosdb'
   location: location
   kind: 'GlobalDocumentDB'
   properties: {
@@ -50,6 +50,17 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
   }
 }
 
+resource appConfig 'Microsoft.Web/sites/config@2021-02-01' = {
+  name:  'logs'
+  parent: webApp
+  properties: {
+    applicationLogs:{
+      fileSystem: {
+        level: 'Information'
+      }
+    }
+  }
+}
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: '${appName}-plan'
   location: location
