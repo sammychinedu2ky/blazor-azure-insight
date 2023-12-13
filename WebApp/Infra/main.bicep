@@ -29,7 +29,7 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
       connectionStrings: [
         {
           name: 'COSMOSDB'
-          connectionString: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
+          connectionString: filter(cosmosDbAccount.listConnectionStrings().connectionStrings, x=>x.description =='table')[0].connectionString
           type: 'Custom'
         }
       ]
