@@ -13,13 +13,17 @@
 <p role="status">Random Number: @_luckyNumber</p>
 
 <button class="btn btn-primary" @onclick="DrawRaffle">Draw Raffle</button>
-<br/>
+<br />
 @if (_luckyNumber % 2 == 0)
 {
     <h2>Congratulations! You won 🚀🥇</h2>
 }
+else
+{
+    <h2>Sorry! You lost 😢...Try Again</h2>
+}
 <button class="btn btn-primary" @onclick="ToggleSlowOperation">Toggle Slow Operation</button>
-<br/>
+<br />
 <h3>Slow Operation Enabled: @_slowOperationEnabled</h3>
 @code {
     private int _luckyNumber = 0;
