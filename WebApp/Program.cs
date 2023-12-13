@@ -1,3 +1,5 @@
+using Azure.Data.Tables;
+using Microsoft.Extensions.Options;
 using WebApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +9,14 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.Configure<DataBaseOptions>(builder.Configuration.GetSection(DataBaseOptions.ConnectionString));
 var app = builder.Build();
-
+builder.Services.AddScoped<TableClient>(sp =>
+{
+    var options = sp.GetRequiredService<IOptions<DataBaseOptions>>();
+    var connectionString = options.Value.COSMOSDB;
+    var tableName = "Raffle";
+    var client = new TableClient(connectionString, tableName);
+    return client;
+});
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

@@ -3,8 +3,7 @@
 @inject IConfiguration Configuration
 @using Azure.Data.Tables
 @using Azure
-@using Microsoft.Extensions.Options
-@inject IOptions<DataBaseOptions> Options
+@inject TableClient TableClient
 <PageTitle>Raffle</PageTitle>
 
 <h1>Raffle</h1>
@@ -20,29 +19,21 @@
 <p>@Configuration.GetConnectionString("COSMOSDB")</p>
 @code {
     private int _luckyNumber = 0;
-    private TableClient? _tableClient;
-    private void DrawRaffle()
+    private async Task DrawRaffle()
     {
         _luckyNumber = Random.Shared.Next(0, 11);
-        _tableClient?.AddEntity<RaffleEntity>(new RaffleEntity()
+        await TableClient.AddEntityAsync<RaffleEntity>(new RaffleEntity()
         {
             PartitionKey = "Raffle",
             RowKey = Guid.NewGuid().ToString(),
             LuckyNumber = _luckyNumber
         });
-    }
-    protected override async Task OnInitializedAsync()
-    {
-        var tableName = "Raffle";
-        Console.WriteLine(Options.Value.COSMOSDB);
-        TableServiceClient tableServiceClient = new TableServiceClient(Options.Value.COSMOSDB);
-        TableClient tableClient = tableServiceClient.GetTableClient(tableName);
-        await tableClient.CreateIfNotExistsAsync();
+        
     }
     public class RaffleEntity : ITableEntity
     {
-        public string PartitionKey { get; set; }
-        public string RowKey { get; set; }
+        public string? PartitionKey { get; set; }
+        public string? RowKey { get; set; }
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
         public int LuckyNumber { get; set; }
