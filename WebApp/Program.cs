@@ -6,10 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.Configure<DataBaseOptions>(builder.Configuration.GetSection(DataBaseOptions.ConnectionString));
+
+builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(ConnectionStrings.ConnectionString));
+builder.Services.AddApplicationInsightsTelemetry(option=>{
+    var connectionString= builder.Configuration.GetSection(ConnectionStrings.ConnectionString)["APPLICATION_INSIGHTS"];
+    option.ConnectionString = connectionString;
+});
 builder.Services.AddSingleton<TableClient>(sp =>
 {
-    var options = sp.GetRequiredService<IOptions<DataBaseOptions>>();
+    var options = sp.GetRequiredService<IOptions<ConnectionStrings>>();
     var connectionString = options.Value.COSMOSDB;
     var tableName = "Raffle";
     TableServiceClient tableServiceClient = new TableServiceClient(connectionString);
@@ -37,8 +42,9 @@ app.MapRazorComponents<App>()
 
 app.Run();
 
-public class DataBaseOptions
+public class ConnectionStrings
 {
     public const string ConnectionString = "ConnectionStrings";
     public string COSMOSDB { get; set; } = String.Empty;
+    public string APPLICATION_INSIGHTS { get; set; } = String.Empty;
 }

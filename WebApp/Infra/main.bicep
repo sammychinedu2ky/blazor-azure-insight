@@ -32,18 +32,11 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
           connectionString: filter(cosmosDbAccount.listConnectionStrings().connectionStrings, x=>contains(x.description,'Table'))[0].connectionString
           type: 'Custom'
         }
-      ]
-      appSettings: [
-
         {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: appInsights.properties.ConnectionString
+          name: 'APPLICATION_INSIGHTS'
+          connectionString: appInsights.properties.ConnectionString
+          type: 'Custom'
         }
-        {
-          name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
-          value: '~3'
-        }
-    
       ]
     }
     
