@@ -56,12 +56,20 @@ else
         stopwatch.Stop();
         TimeSpan elapsedTime = stopwatch.Elapsed;
         _elapsedTime = elapsedTime.TotalMilliseconds;
-        Logger.LogInformation("Raffle operation took {elapsedTime} milli seconds with value {value}", elapsedTime.TotalMilliseconds, _luckyNumber);
+        Log.LogWarning(Logger, _elapsedTime, _luckyNumbe);
        
     }
 
     private void ToggleSlowOperation() => _slowOperationEnabled = !_slowOperationEnabled;
+    private static class Log
+    {
+        private static readonly Action<ILogger, double, string,Exception> _logName = LoggerMessage.Define<double, string>(LogLevel.Warning, 0, "Raffle operation took {elapsedTime} milliseconds with value {value}");
 
+        public static void LogWarning(ILogger logger, double elapsedTime, string value)
+        {
+            _logName(logger, elapsedTime, value, null!);
+        }
+    }
     public class RaffleEntity : ITableEntity
     {
         public string? PartitionKey { get; set; }
