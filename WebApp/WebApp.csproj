@@ -7,4 +7,8 @@
         <UserSecretsId>714c9d8a-0c25-4571-9395-85b130dc6d23</UserSecretsId>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Azure.Data.Tables" Version="12.8.2" />
+    </ItemGroup>
+
 </Project>

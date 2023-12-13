@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
+builder.Services.Configure<DataBaseOptions>(builder.Configuration.GetSection(DataBaseOptions.ConnectionString));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,3 +25,9 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+
+public class DataBaseOptions
+{
+    public const string ConnectionString  = "ConnectionStrings";
+    public string COSMOSDB { get; set; } = String.Empty;
+}

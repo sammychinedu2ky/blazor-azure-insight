@@ -12,6 +12,11 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
         locationName: location
       }
     ]
+    capabilities: [
+      {
+        name: 'EnableTable'
+      }
+    ]
   }
 }
 
