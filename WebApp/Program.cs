@@ -8,8 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.Configure<DataBaseOptions>(builder.Configuration.GetSection(DataBaseOptions.ConnectionString));
-var app = builder.Build();
-builder.Services.AddScoped<TableClient>(sp =>
+builder.Services.AddSingleton<TableClient>(sp =>
 {
     var options = sp.GetRequiredService<IOptions<DataBaseOptions>>();
     var connectionString = options.Value.COSMOSDB;
@@ -17,6 +16,8 @@ builder.Services.AddScoped<TableClient>(sp =>
     var client = new TableClient(connectionString, tableName);
     return client;
 });
+var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
