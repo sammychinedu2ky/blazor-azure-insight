@@ -24,9 +24,10 @@ else
 <button class="btn btn-primary" @onclick="ToggleSlowOperation">Toggle Slow Operation</button>
 <br />
 <h3>Slow Operation Enabled: @_slowOperationEnabled</h3>
-
+<h2>@_elapsedTime</h2>
 @code {
     private int _luckyNumber = 0;
+    private double _elapsedTime = 0;
     private bool _slowOperationEnabled = false;
     private async Task DrawRaffle()
     {
@@ -54,6 +55,7 @@ else
         }
         stopwatch.Stop();
         TimeSpan elapsedTime = stopwatch.Elapsed;
+        _elapsedTime = elapsedTime.TotalMilliseconds;
         Logger.LogInformation("Raffle operation took {elapsedTime} milli seconds with value {value}", elapsedTime.TotalMilliseconds, _luckyNumber);
        
     }
