@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Azure.Data.Tables" Version="12.8.2" />
+      <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.22.0" />
     </ItemGroup>
 
 </Project>
