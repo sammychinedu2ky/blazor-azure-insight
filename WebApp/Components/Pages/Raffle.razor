@@ -56,16 +56,16 @@ else
         stopwatch.Stop();
         TimeSpan elapsedTime = stopwatch.Elapsed;
         _elapsedTime = elapsedTime.TotalMilliseconds;
-        Log.LogWarning(Logger, _elapsedTime, _luckyNumbe);
+        Log.LogWarning(Logger, _elapsedTime, _luckyNumber);
        
     }
 
     private void ToggleSlowOperation() => _slowOperationEnabled = !_slowOperationEnabled;
     private static class Log
     {
-        private static readonly Action<ILogger, double, string,Exception> _logName = LoggerMessage.Define<double, string>(LogLevel.Warning, 0, "Raffle operation took {elapsedTime} milliseconds with value {value}");
+        private static readonly Action<ILogger, double, int,Exception> _logName = LoggerMessage.Define<double, int>(LogLevel.Warning, 0, "Raffle operation took {elapsedTime} milliseconds with value {value}");
 
-        public static void LogWarning(ILogger logger, double elapsedTime, string value)
+        public static void LogWarning(ILogger logger, double elapsedTime, int value)
         {
             _logName(logger, elapsedTime, value, null!);
         }
