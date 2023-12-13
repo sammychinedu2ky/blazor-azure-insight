@@ -3,7 +3,9 @@
 @inject IConfiguration Configuration
 @using Azure.Data.Tables
 @using Azure
+@using System.Diagnostics
 @inject TableClient TableClient
+@inject ILogger<Raffle> Logger
 <PageTitle>Raffle</PageTitle>
 
 <h1>Raffle</h1>
@@ -16,20 +18,35 @@
 {
     <h2>Congratulations! You won 🚀🥇</h2>
 }
-<p>@Configuration.GetConnectionString("COSMOSDB")</p>
+<button class="btn btn-primary" @onclick="ToggleSlowOperation">Toggle Slow Operation</button>
+<h3>Slow Operation Enabled: @_slowOperationEnabled</h3>
 @code {
     private int _luckyNumber = 0;
+    private bool _slowOperationEnabled = false;
     private async Task DrawRaffle()
     {
-        _luckyNumber = Random.Shared.Next(0, 11);
-        await TableClient.AddEntityAsync<RaffleEntity>(new RaffleEntity()
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        if (_slowOperationEnabled)
         {
-            PartitionKey = "Raffle",
-            RowKey = Guid.NewGuid().ToString(),
-            LuckyNumber = _luckyNumber
-        });
-        
+            await Task.Delay(1000);
+        }
+        _luckyNumber = Random.Shared.Next(0, 11);
+        if (_luckyNumber % 2 == 0)
+        {
+            await TableClient.AddEntityAsync<RaffleEntity>(new RaffleEntity()
+                {
+                    PartitionKey = "Raffle",
+                    RowKey = Guid.NewGuid().ToString(),
+                    LuckyNumber = _luckyNumber
+                });
+        }
+        stopwatch.Stop();
+        TimeSpan elapsedTime = stopwatch.Elapsed;
+        Logger.LogInformation("Raffle operation took {timetaken} seconds", elapsedTime.Seconds);
     }
+
+    private void ToggleSlowOperation() => _slowOperationEnabled = !_slowOperationEnabled;
+
     public class RaffleEntity : ITableEntity
     {
         public string? PartitionKey { get; set; }
