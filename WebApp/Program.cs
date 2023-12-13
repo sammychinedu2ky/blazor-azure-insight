@@ -13,8 +13,10 @@ builder.Services.AddSingleton<TableClient>(sp =>
     var options = sp.GetRequiredService<IOptions<DataBaseOptions>>();
     var connectionString = options.Value.COSMOSDB;
     var tableName = "Raffle";
-    var client = new TableClient(connectionString, tableName);
-    return client;
+    TableServiceClient tableServiceClient = new TableServiceClient(connectionString);
+    TableClient tableClient = tableServiceClient.GetTableClient(tableName);
+    tableClient.CreateIfNotExists();
+    return tableClient;
 });
 var app = builder.Build();
 
@@ -38,6 +40,6 @@ app.Run();
 
 public class DataBaseOptions
 {
-    public const string ConnectionString  = "ConnectionStrings";
+    public const string ConnectionString = "ConnectionStrings";
     public string COSMOSDB { get; set; } = String.Empty;
 }
