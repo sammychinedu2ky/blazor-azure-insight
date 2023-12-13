@@ -100,7 +100,7 @@ resource appInsightAlert 'Microsoft.Insights/scheduledQueryRules@2022-08-01-prev
     criteria: {
       allOf: [
         {
-          query: 'traces | where customDimensions["elapsedTime"] > 900'
+          query: 'traces|where todouble(customDimensions["elapsedTime"]) > 900'
           timeAggregation: 'Count'
           threshold: 1
           operator: 'GreaterThan'
