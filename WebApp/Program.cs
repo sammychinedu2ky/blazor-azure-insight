@@ -8,9 +8,11 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(ConnectionStrings.key));
-builder.Services.AddApplicationInsightsTelemetry(option=>{
-    var connectionString= builder.Configuration.GetSection(ConnectionStrings.key)["APPLICATION_INSIGHTS"];
-    option.ConnectionString = connectionString;
+builder.Services.AddApplicationInsightsTelemetry(option =>
+{
+    var connectionStringObject = new ConnectionStrings();
+    builder.Configuration.GetSection(ConnectionStrings.key).Bind(connectionStringObject);
+    option.ConnectionString = connectionStringObject.APPLICATION_INSIGHTS;
 });
 builder.Services.AddSingleton<TableClient>(sp =>
 {
