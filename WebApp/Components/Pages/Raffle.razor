@@ -25,6 +25,7 @@ else
 <button class="btn btn-primary" @onclick="ToggleSlowOperation">Toggle Slow Operation</button>
 <br />
 <h3>Slow Operation Enabled: @_slowOperationEnabled</h3>
+ <p>@Configuration.GetConnectionString("COSMOSDB")</p>
 @code {
     private int _luckyNumber = 0;
     private bool _slowOperationEnabled = false;
@@ -48,7 +49,7 @@ else
         stopwatch.Stop();
         TimeSpan elapsedTime = stopwatch.Elapsed;
         Logger.LogInformation("Raffle operation took {elapsedTime} milli seconds", elapsedTime.Milliseconds);
-        <p>@Configuration.GetConnectionString("COSMOSDB")</p>
+       
     }
 
     private void ToggleSlowOperation() => _slowOperationEnabled = !_slowOperationEnabled;
