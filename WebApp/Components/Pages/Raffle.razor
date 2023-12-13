@@ -54,7 +54,7 @@ else
         }
         stopwatch.Stop();
         TimeSpan elapsedTime = stopwatch.Elapsed;
-        Logger.LogInformation("Raffle operation took {elapsedTime} milli seconds with value {value}", elapsedTime, _luckyNumber);
+        Logger.LogInformation("Raffle operation took {elapsedTime} milli seconds with value {value}", elapsedTime.TotalMilliseconds, _luckyNumber);
        
     }
 
