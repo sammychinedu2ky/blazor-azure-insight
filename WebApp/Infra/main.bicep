@@ -2,7 +2,7 @@ param appName string
 param location string
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
-  name: '${appName}-cosmosdb'
+  name: 'blazor-cosmosdb'
   location: location
   kind: 'GlobalDocumentDB'
   properties: {
