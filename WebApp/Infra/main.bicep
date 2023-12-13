@@ -115,7 +115,7 @@ resource actionGroup 'Microsoft.Insights/actionGroups@2023-01-01' = {
     emailReceivers: [
       {
         name: 'email'
-        emailAddress: 'sammychinedu2ky@gmail.com'
+        emailAddress: 'swacblooms@gmail.com'
       }
     ]
   }
